@@ -132,27 +132,35 @@ function update() {
     }
 }
 
-// Draw the intro screen
 function drawIntroScreen() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "white";
-    ctx.font = "20px Courier New"; // Typewriter effect
+    ctx.font = "18px Courier New"; // Slightly smaller font
     const introText = [
         "Your house is under siege by demons.",
-        "To protect yourself, you've placed salt at every window to block their entry.",
+        "To protect yourself, you've placed salt at every",
+        "window to block their entry.",
         "But beware—the salt gets consumed over time.",
-        "When a window runs out of salt, hurry to it and replenish the salt by pressing 'Enter'.",
-        "If you fail to do so in time, the demons will break through, and you will perish.",
+        "When a window runs out of salt, hurry to it and",
+        "replenish the salt by pressing 'Enter'.",
+        "If you fail to do so in time, the demons will",
+        "break through, and you will perish.",
         "Survive as long as you can...",
         "Press 'Enter' to begin."
     ];
+    
+    const padding = 40; // Padding from the left side
+    const lineHeight = 25; // Vertical spacing between lines
+    const startY = 100; // Initial y position for the first line
+
     introText.forEach((line, index) => {
-        ctx.fillText(line, 50, 150 + index * 30);
+        ctx.fillText(line, padding, startY + index * lineHeight);
     });
 }
+
 
 // Draw game elements
 function draw() {
