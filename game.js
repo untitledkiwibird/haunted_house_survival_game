@@ -12,13 +12,41 @@ let gameOver = false;
 let intervalId;
 let keys = {};
 
-// Load the sound effect
-const enterSound = new Audio("sounds/salt-shaker_1-2-106581.mp3");
-
 // Load the background music
 const bgm = new Audio("sounds/Unseen-Horrors(chosic.com).mp3");
 bgm.loop = true; // Ensure the music loops
 bgm.volume = 0.5; // Set the volume level (optional)
+
+// Event listeners for movement and actions
+window.addEventListener("keydown", (e) => {
+    keys[e.key] = true;
+
+    // Play sound effect when 'Enter' is pressed
+    if (e.key === "Enter") {
+        enterSound.currentTime = 0; // Reset sound to the start
+        enterSound.play().catch(error => console.error("Error playing sound:", error));
+    }
+
+    if (isIntroScreen && e.key === "Enter") {
+        isIntroScreen = false;
+        bgm.play().catch(error => console.error("Error playing BGM:", error)); // Start BGM
+        startGameLoop();
+    }
+
+    if (!isIntroScreen && e.key === "Enter" && activeObjectIndex !== -1 && isColliding(player, borderObjects[activeObjectIndex])) {
+        borderObjects[activeObjectIndex].opacity = 1; // Reset opacity to 100%
+        activeObjectIndex = -1;
+        timer = getRoundTime(); // Reset timer for the next round
+        round++;
+        adjustDifficulty();
+        deactivateRandomObject(); // Start next round
+    }
+});
+
+window.addEventListener("keyup", (e) => keys[e.key] = false);
+
+// Load the sound effect
+const enterSound = new Audio("sounds/salt-shaker_1-2-106581.mp3");
 
 // Preload the PNG images
 const objectImg = new Image();
@@ -50,9 +78,9 @@ window.addEventListener("keydown", (e) => {
         enterSound.play().catch(error => console.error("Error playing sound:", error));
     }
 
+    
     if (isIntroScreen && e.key === "Enter") {
         isIntroScreen = false;
-        bgm.play().catch(error => console.error("Error playing BGM:", error)); // Start BGM
         startGameLoop();
     }
 
@@ -96,9 +124,10 @@ function update() {
         obj.opacity -= 1 / (timer * 60); // Decrease opacity based on time
         if (obj.opacity <= 0) {
             gameOver = true;
-            bgm.pause(); // Stop the background music
-            bgm.currentTime = 0; // Reset BGM for the next game
-            drawGameOverScreen(); // Draw "You died" screen
+            alert(`Game Over! The demons have entered.`);
+            if (confirm("Do you want to restart?")) {
+                restartGame();
+            }
         }
     }
 }
@@ -110,7 +139,7 @@ function drawIntroScreen() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
+    ctx.font = "20px Courier New"; // Typewriter effect
     const introText = [
         "Your house is under siege by demons.",
         "To protect yourself, you've placed salt at every window to block their entry.",
@@ -123,37 +152,6 @@ function drawIntroScreen() {
     introText.forEach((line, index) => {
         ctx.fillText(line, 50, 150 + index * 30);
     });
-}
-
-// Draw the "You Died" screen
-function drawGameOverScreen() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    const gameOverText = [
-        "You died.",
-        "The demons have taken over your house.",
-        "",
-        "Do you want to start over?",
-        "Press 'Enter' to restart."
-    ];
-    gameOverText.forEach((line, index) => {
-        ctx.fillText(line, 50, 200 + index * 30);
-    });
-
-    // Restart game if the user presses Enter
-    window.addEventListener("keydown", handleRestart, { once: true });
-}
-
-// Handle restarting the game
-function handleRestart(e) {
-    if (e.key === "Enter") {
-        restartGame();
-        bgm.play().catch(error => console.error("Error playing BGM:", error)); // Restart BGM
-    }
 }
 
 // Draw game elements

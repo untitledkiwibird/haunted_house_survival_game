@@ -2,6 +2,8 @@ body {
     margin: 0;
     overflow: hidden;
     background-color: #222;
+    font-family: 'Courier New', Courier, monospace; /* Typewriter-style font */
+    color: #fff;
 }
 
 canvas {
@@ -10,4 +12,41 @@ canvas {
     background-color: #333;
     border: 2px solid #fff;
     border-radius: 8px;
+}
+
+.typewriter-text {
+    position: relative;
+    display: inline-block;
+    white-space: pre; /* Preserves spaces and line breaks */
+    overflow: hidden;
+    vertical-align: top;
+    font-size: 20px; /* Adjust as needed */
+    line-height: 1.5;
+    animation: typing-cursor-blink 1s step-end infinite; /* Blinking cursor */
+}
+
+.typewriter-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background-color: #fff;
+    margin-left: 5px;
+    animation: blink 0.7s step-end infinite;
+}
+
+/* Keyframes for blinking cursor */
+@keyframes blink {
+    50% {
+        background-color: transparent;
+    }
+}
+
+/* Keyframes for typewriter effect (if needed for static HTML text) */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
 }
