@@ -15,7 +15,7 @@ let keys = {};
 // Load the background music
 const bgm = new Audio("sounds/Unseen-Horrors(chosic.com).mp3");
 bgm.loop = true; // Ensure the music loops
-bgm.volume = 0.5; // Set the volume level (optional)
+bgm.volume = 0.5; // Set the volume level 
 
 // Event listeners for movement and actions
 window.addEventListener("keydown", (e) => {
@@ -146,7 +146,7 @@ function drawIntroScreen() {
         "But beware—the salt gets consumed over time.",
         "When a window runs out of salt, hurry to it and replenish the salt by pressing 'Enter'.",
         "If you fail to do so in time, the demons will break through, and you will perish.",
-        "Survive as long as you can and keep the demons at bay!",
+        "Survive as long as you can...",
         "Press 'Enter' to begin."
     ];
     introText.forEach((line, index) => {
